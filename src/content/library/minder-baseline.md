@@ -2,7 +2,7 @@
 title: Baseline using Minder
 description: Using OpenSSF Minder to assess and remediate OSPS Baseline requirements 
 image: /project-logos/minder.png
-tags: [Minder, OSPS Baseline]
+tags: [Helpful Tools, OSPS Baseline]
 weight: 0
 author: Evan Anderson, Custcodian
 ---
