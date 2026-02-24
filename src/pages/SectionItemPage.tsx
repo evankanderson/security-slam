@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { HubSpotForm } from "../components/HubSpotForm";
 import { ProjectCard } from "../components/ProjectCard";
+import { Leaderboard } from "../components/Leaderboard";
 import { markdownComponents } from "../components/markdownComponents";
 import {
   getSectionItemBySlug,
@@ -37,6 +38,7 @@ export const SectionItemPage: React.FC<SectionItemPageProps> = ({
       : undefined;
 
   const [shuffledProjects, setShuffledProjects] = useState<ProjectInfo[]>([]);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
 
   useEffect(() => {
     if (item?.projects) {
@@ -80,11 +82,100 @@ export const SectionItemPage: React.FC<SectionItemPageProps> = ({
           {item.description}
         </p>
       )}
-      {shuffledProjects.length > 0 && (
+      {item.path === "/slam26/participating-projects" && item.projects && (
+        <>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: "var(--gf-space-xl)"
+            }}
+          >
+            <div
+              style={{
+                display: "inline-flex",
+                backgroundColor: "rgba(255, 255, 255, 0.08)",
+                borderRadius: "12px",
+                padding: "6px",
+                border: "1px solid rgba(255, 255, 255, 0.15)",
+                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)"
+              }}
+            >
+              <button
+                onClick={() => setShowLeaderboard(false)}
+                style={{
+                  padding: "var(--gf-space-md) var(--gf-space-xl)",
+                  backgroundColor: !showLeaderboard
+                    ? "rgba(147, 51, 234, 0.8)"
+                    : "transparent",
+                  color: !showLeaderboard
+                    ? "#ffffff"
+                    : "var(--gf-color-text)",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontWeight: 600,
+                  fontSize: "1rem",
+                  transition: "all 0.2s ease",
+                  whiteSpace: "nowrap"
+                }}
+              >
+                All Projects
+              </button>
+              <button
+                onClick={() => setShowLeaderboard(true)}
+                style={{
+                  padding: "var(--gf-space-md) var(--gf-space-xl)",
+                  backgroundColor: showLeaderboard
+                    ? "rgba(147, 51, 234, 0.8)"
+                    : "transparent",
+                  color: showLeaderboard
+                    ? "#ffffff"
+                    : "var(--gf-color-text)",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontWeight: 600,
+                  fontSize: "1rem",
+                  transition: "all 0.2s ease",
+                  whiteSpace: "nowrap"
+                }}
+              >
+                Leaderboard
+              </button>
+            </div>
+          </div>
+          {showLeaderboard ? (
+            <Leaderboard projects={item.projects} />
+          ) : (
+            shuffledProjects.length > 0 && (
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+                  gap: "var(--gf-space-xl)",
+                  marginBottom: "var(--gf-space-2xl)"
+                }}
+              >
+                {shuffledProjects.map((project, index) => (
+                  <ProjectCard
+                    key={index}
+                    name={project.name}
+                    advisor={project.advisor}
+                    repoUrl={project.repoUrl}
+                    logoUrl={project.logoUrl}
+                  />
+                ))}
+              </div>
+            )
+          )}
+        </>
+      )}
+      {item.path !== "/slam26/participating-projects" && shuffledProjects.length > 0 && (
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
             gap: "var(--gf-space-xl)",
             marginBottom: "var(--gf-space-2xl)"
           }}
